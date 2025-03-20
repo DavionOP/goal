@@ -1,0 +1,9 @@
+#subGoalDisplay {
+    font-size: 48px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 5px black;
+    white-space: nowrap; /* Prevents text from wrapping */
+    width: auto; /* Ensures the div resizes to fit content */
+    padding: 10px; /* Adds some spacing to avoid tight fits */
+}

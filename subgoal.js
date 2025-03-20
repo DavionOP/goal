@@ -1,60 +1,45 @@
-console.log("subGoal.js script loaded");
+console.log("✅ Simple Sub Goal Overlay Loaded");
 
-let goal = 10; // Initial goal
-let currentSubs = 0;
+let goal = 10; // Default Goal
 
-// Function to update the goal text display
+// Function to update the display
 function updateGoalText() {
-    let subGoalText = document.getElementById("subGoalDisplay");
-    if (subGoalText) {
-        subGoalText.innerText = `Subscribers: ${currentSubs}/${goal}`;
-    } else {
-        console.error("SubGoal text element not found.");
-    }
+    document.getElementById("subGoalDisplay").innerText = `Sub Goal: ${goal}`;
 }
 
-// Event: Widget Load (fetch initial goal value)
+// Event: Widget Load (Initialize Goal)
 window.addEventListener('onWidgetLoad', function (obj) {
     let fieldData = obj.detail.fieldData;
-    goal = fieldData.subGoal || 10;
+    goal = fieldData.subGoal || 10; // Load stored goal if available
     updateGoalText();
 });
 
-// Event: Handle new subs, gifted subs, and chat commands
+// Event: Handle Chat Command (!setgoal)
 window.addEventListener('onEventReceived', function (event) {
     let data = event.detail.event;
 
-    if (data.type === "subscriber" || data.type === "giftedSub") {
-        currentSubs += data.amount || 1; // Default to 1 if no amount is provided
-        updateGoalText();
-    }
-
-    if (data.type === "message") {
-        let msg = data.data.text;
+    if (event.detail.listener === "message") {
+        let msg = data.renderedText.trim();
+        
         if (msg.startsWith("!setgoal")) {
             let parts = msg.split(" ");
             let newGoal = parseInt(parts[1], 10);
+
             if (!isNaN(newGoal) && newGoal > 0) {
-                const trustedUsers = ["Wavionn"]; // Add more trusted users as needed
-                if (trustedUsers.includes(data.data.nick) || (data.data.badges && data.data.badges.includes("moderator"))) {
+                if (data.data.nick.toLowerCase() === "lilbrodavion" || 
+                    data.data.badges?.includes("moderator")) {
                     goal = newGoal;
                     updateGoalText();
-                    if (typeof SE_API !== "undefined") {
-                        SE_API.say(`Sub goal updated to ${goal} subscribers!`);
-                    }
+                    console.log(`🎯 Sub goal updated to: ${goal}`);
                 } else {
-                    if (typeof SE_API !== "undefined") {
-                        SE_API.say(`@${data.data.nick}, you don't have permission to change the goal.`);
-                    }
+                    console.log(`❌ @${data.data.nick} does not have permission to change the goal.`);
                 }
             } else {
-                if (typeof SE_API !== "undefined") {
-                    SE_API.say(`Invalid goal value! Please enter a number greater than 0.`);
-                }
+                console.log(`❌ Invalid goal input: ${parts[1]}`);
             }
         }
     }
 });
 
-// Initialize the overlay display
+// Initialize Display
 updateGoalText();

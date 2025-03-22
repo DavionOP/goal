@@ -21,7 +21,7 @@ window.addEventListener('onEventReceived', function (event) {
     if (event.detail.listener === "message") {
         let msg = data.renderedText.trim();
         
-        if (msg.startsWith("!setgoal")) {
+        if (msg.startsWith("!subgoal")) {
             let parts = msg.split(" ");
             let newGoal = parseInt(parts[1], 10);
 

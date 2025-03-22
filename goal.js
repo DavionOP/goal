@@ -27,7 +27,9 @@ window.addEventListener('onEventReceived', function (event) {
 
             if (!isNaN(newGoal) && newGoal > 0) {
                 if (data.data.nick.toLowerCase() === "skyrastyles" || 
-                    data.data.badges?.includes("moderator")) {
+                    data.data.tags?.badges?.includes("broadcaster/1") || 
+                    data.data.tags?.badges?.includes("moderator/1")) {
+
                     goal = newGoal;
                     updateGoalText();
                     console.log(`🎯 Sub goal updated to: ${goal}`);

@@ -26,7 +26,7 @@ window.addEventListener('onEventReceived', function (event) {
             let newGoal = parseInt(parts[1], 10);
 
             if (!isNaN(newGoal) && newGoal > 0) {
-                if (data.data.nick.toLowerCase() === "lilbrodavion" || 
+                if (data.data.nick.toLowerCase() === "skyrastyles" || 
                     data.data.badges?.includes("moderator")) {
                     goal = newGoal;
                     updateGoalText();
